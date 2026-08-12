@@ -1,7 +1,8 @@
 {
-  "id": "pokemon_red_italiano",
-  "name": "italiano",
+  "id": "pokegen1_italiano",
+  "name": "versione italiana",
   "version": "0.1.0",
+  "author": "PrimianoCristino",
   "api": 2,
   "entry": "main.lua",
   "profile": "content",
@@ -11,5 +12,5 @@
   "dependencies": [],
   "optional_dependencies": [],
   "conflicts": [],
-  "description": "TODO: one line about pokemon_red_italiano"
+  "description": "Traduzione italiana a cura di Primiano Cristino"
 }

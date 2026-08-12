@@ -1,0 +1,16 @@
+return {
+    summary = "Traduzione ITALIANA di Primiano Cristino",
+    author = "PrimianoCristino",
+    support = "https://github.com/primianocristino/TraduzioneItaliana_Gen1Recomp",
+    tags = { "translation", "italian", "localization", "content" },
+    compat = { modApi = 2 },
+    differences = {
+        added = {
+            "Traduzione italiana",
+        },
+        changed = {},
+        known = {
+            "slot machine ancora da tradurre",
+        },
+    }
+}
