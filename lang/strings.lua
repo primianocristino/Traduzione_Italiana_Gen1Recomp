@@ -474,7 +474,7 @@ return {
   ["POKéMON"] = "POKéMON",
   ["ITEMS"] = "ZAINO",
   ["SAVE"] = "SALVA",
-  ["PLAYER %s\nBADGES    %d\nPOKéDEX %3d\nTIME %6d:%02d"] = "NOME %s\nMEDAGLIE %d\nPOKéDEX %3d\nTEMPO %6d:%02d",
+  ["PLAYER %s\nBADGES    %d\nPOKéDEX %3d\nTIME %6d:%02d"] = "NOME %s\nMEDAGLIE %d\11POKéDEX %3d\nTEMPO %6d:%02d",
   ["\fWould you like to\nSAVE the game?"] = "\fVuoi SALVARE\nla partita?",
   ["Now saving..."] = "Salvataggio in\ncorso...",
   ["%s saved\nthe game!"] = "%s ha\nsalvato la partita!",
