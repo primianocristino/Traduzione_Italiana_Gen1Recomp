@@ -472,7 +472,7 @@ return {
   ["COINS %4d"] = "MONETE %4d",
   ["POKéDEX"] = "POKéDEX",
   ["POKéMON"] = "POKéMON",
-  ["ITEMS"] = "ZAINO",
+  ["ITEMS"] = "OGGETTI",
   ["SAVE"] = "SALVA",
   ["PLAYER %s\nBADGES    %d\nPOKéDEX %3d\nTIME %6d:%02d"] = "NOME %s\nMEDAGLIE %d\11POKéDEX %3d\nTEMPO %6d:%02d",
   ["\fWould you like to\nSAVE the game?"] = "\fVuoi SALVARE\nla partita?",
