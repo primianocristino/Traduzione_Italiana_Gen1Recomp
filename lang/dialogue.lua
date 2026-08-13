@@ -641,7 +641,7 @@ return {
   ["_GolduckDexEntry"] = "Spesso visto\nnuotare elegante\nvicino averi\12laghi. Viene\nscambiato spesso\nper il mostro\12Kappa.",
   ["_GolemDexEntry"] = "Il corpo simile a\nun masso é\ndurissimo. Resiste\12senza danni a\ncariche di\ndinamite.",
   ["_GoodText"] = "ottimo!",
-  ["_GotAwayText"] = "Fuggito senza\nproblemi!",
+  ["_GotAwayText"] = "Scampato pericolo!",
   ["_GotMapText"] = "{PLAYER} ha\nottenuto\11{RAM:wStringBuffer}!",
   ["_GotMonText"] = "{PLAYER} ha\nottenuto\11{RAM:wNameBuffer}!",
   ["_GotOffBicycleText1"] = "{PLAYER} é sceso",
