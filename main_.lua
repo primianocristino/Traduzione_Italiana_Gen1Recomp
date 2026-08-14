@@ -24,19 +24,14 @@ return function(mod)
       mod.log:error("Impossibile compilare it_options.lua: %s", tostring(err))
     end
   end
-  
   -- Esporta le opzioni persistenti per l'uso nel resto della mod
   if mod.options then
     mod.exports.lingua_mosse = mod.options:get("lingua_mosse")
     mod.exports.mostra_nemico = mod.options:get("mostra_nemico")
-    mod.exports.prezzi_riga = mod.options:get("prezzi_riga")
-    mod.exports.trainer_card = mod.options:get("trainer_card")
   else
     -- Fallback sicuro se it_options.lua non esiste ancora
     mod.exports.lingua_mosse = "italiano"
     mod.exports.mostra_nemico = true
-    mod.exports.prezzi_riga = true
-    mod.exports.trainer_card = true
   end
 
   -- Funzione per leggere i file di catalogo dalla cartella lang/
@@ -117,18 +112,9 @@ return function(mod)
   counts.species = each("species_names", function(id, value)
     mod.content.pokemon:patch(id, { name = value })
   end)
-  
-  -- Gestione Condizionale: Lingua delle Mosse
-  if mod.exports.lingua_mosse == "italiano" then
-    counts.moves = each("move_names", function(id, value)
-      mod.content.moves:patch(id, { name = value })
-    end)
-  elseif mod.exports.lingua_mosse == "italiano2" then
-    counts.moves = each("move_names2", function(id, value)
-      mod.content.moves:patch(id, { name = value })
-    end)
-  end
-  
+  counts.moves = each("move_names", function(id, value)
+    mod.content.moves:patch(id, { name = value })
+  end)
   counts.items = each("item_names", function(id, value)
     mod.content.items:patch(id, { name = value })
   end)
@@ -139,7 +125,8 @@ return function(mod)
     mod.content.statuses:patch(id, { label = value })
   end)
 
-  -- Gestione Condizionale: Mostrare o nascondere "nemico" nei testi di battaglia
+
+  -- Condizione per mostrare o nascondere "nemico" nei testi di battaglia
   if mod.exports.mostra_nemico then
     mod.content.strings:override("Enemy %s", "%s nemico")
     mod.content.strings:override("%s\nused %s!", "%s\nusa %s!")
@@ -147,6 +134,7 @@ return function(mod)
     mod.content.strings:override("Enemy %s", "%s")
     mod.content.strings:override("%s\nused %s!", "%s usa\n%s!")
   end
+
 
   -- ---- Traduzione Dinamica Tipi (TypeChart) e Stati -------------------------
   local okType, TypeChart = pcall(require, "src.battle.TypeChart")
@@ -328,13 +316,9 @@ return function(mod)
         love.graphics.circle("fill", bx, by, 1.2)
         love.graphics.setColor(0, 0, 0, 1)
       end
-      
-      -- Gestione Condizionale: Quantità e Prezzi
       if item.right then
-        local offset = mod.exports.prezzi_riga and 8 or 0
-        Font.draw(item.right, 160 - 8 - Font.width(item.right), y + offset)
+        Font.draw(item.right, 160 - 8 - Font.width(item.right), y + 8)
       end
-      
       if i == self.index then
         Font.drawCode((self.swapIndex == i or self.hollowIndex == i)
                       and Theme.cursorHollow or Theme.cursor, 8, y)
@@ -395,13 +379,7 @@ return function(mod)
   end
 
   -- ---- UI: Scheda Allenatore --------------------------------------
-  local oldTrainerCardDraw = TrainerCard.draw
   function TrainerCard:draw()
-    -- Gestione Condizionale: Trainer Card
-    if not mod.exports.trainer_card then
-        return oldTrainerCardDraw(self)
-    end
-
     love.graphics.setColor(1, 1, 1, 1)
     love.graphics.rectangle("fill", 0, 0, 160, 144)
     local save = self.game.save
@@ -453,17 +431,17 @@ return function(mod)
 
 
   -- ---- UI: Sottomenu Pokémon (Scambio -> "SPOSTA") ----------------
-  mod.hooks:wrap("ui.party.submenu", function(next, game, items, mon, ctx)
-    local result = next(game, items, mon, ctx)
-    if type(result) == "table" then
-        for _, item in ipairs(result) do
-            if item.action == "switch" then
-                item.label = "SPOSTA"
-            end
-        end
-    end
-    return result
-  end)
+  --mod.hooks:wrap("ui.party.submenu", function(next, game, items, mon, ctx)
+  --  local result = next(game, items, mon, ctx)
+  --  if type(result) == "table" then
+  --      for _, item in ipairs(result) do
+  --          if item.action == "switch" then
+  --              item.label = "SPOSTA"
+  --          end
+  --      end
+  --  end
+  --  return result
+  --end)
 
   -- ---- UI: Fix Schermata del Titolo (Nastro e Pokémon Giallo) -----
   local TitleState = require("src.ui.TitleState")
