@@ -11,6 +11,29 @@ local Badges = require("src.inventory.Badges")
 
 return function(mod)
 
+
+  -- ---- GESTIONE OPZIONI (Menu Impostazioni Mod) --------------------
+  local compile = loadstring or load
+  local source, err = mod:read("it_options.lua")
+  if source then
+    local chunk, err = compile(source, "@" .. mod.path .. "/it_options.lua")
+    if chunk then
+      local options = chunk()
+      options.install(mod)
+    else
+      mod.log:error("Impossibile compilare it_options.lua: %s", tostring(err))
+    end
+  end
+  -- Esporta le opzioni persistenti per l'uso nel resto della mod
+  if mod.options then
+    mod.exports.lingua_mosse = mod.options:get("lingua_mosse")
+    mod.exports.mostra_nemico = mod.options:get("mostra_nemico")
+  else
+    -- Fallback sicuro se it_options.lua non esiste ancora
+    mod.exports.lingua_mosse = "italiano"
+    mod.exports.mostra_nemico = true
+  end
+
   -- Funzione per leggere i file di catalogo dalla cartella lang/
   local function catalog(name)
     local rel = "lang/" .. name .. ".lua"
@@ -76,6 +99,10 @@ return function(mod)
 
   -- ---- Testi e Tabelle ---------------------------------------------
   local counts = {}
+  -- Supporto per Pokédex integrato 
+  counts.pokedex = each("pokedex_redblue", function(id, value)
+    mod.content.text:override(id, value)
+  end)
   counts.dialogue = each("dialogue", function(id, value)
     mod.content.text:override(id, value)
   end)
@@ -97,6 +124,74 @@ return function(mod)
   counts.statuses = each("status_labels", function(id, value)
     mod.content.statuses:patch(id, { label = value })
   end)
+
+
+  -- Condizione per mostrare o nascondere "nemico" nei testi di battaglia
+  if mod.exports.mostra_nemico then
+    mod.content.strings:override("Enemy %s", "%s nemico")
+    mod.content.strings:override("%s\nused %s!", "%s\nusa %s!")
+  else
+    mod.content.strings:override("Enemy %s", "%s")
+    mod.content.strings:override("%s\nused %s!", "%s usa\n%s!")
+  end
+
+
+  -- ---- Traduzione Dinamica Tipi (TypeChart) e Stati -------------------------
+  local okType, TypeChart = pcall(require, "src.battle.TypeChart")
+  local by_english = {}
+  
+  -- Estrazione dati da type_names
+  counts.type_names = each("type_names", function(typeId, localized)
+    if okType and TypeChart and type(TypeChart.displayName) == "function" then
+      local canonical = TypeChart.displayName(typeId)
+      if type(canonical) == "string" and canonical ~= "" and canonical ~= localized then
+        by_english[canonical] = localized
+      end
+    end
+  end)
+
+  -- Unione dei risultati dal file status_labels
+  counts.status_labels = each("status_labels", function(statusId, localized)
+    if okType and TypeChart and type(TypeChart.displayName) == "function" then
+      local canonical = TypeChart.displayName(statusId)
+      if type(canonical) == "string" and canonical ~= "" and canonical ~= localized then
+        by_english[canonical] = localized
+      end
+    end
+  end)
+
+  if next(by_english) then
+    local okFont, Font = pcall(require, "src.render.Font")
+    if okFont and type(Font) == "table" then
+      local function localize(text)
+        if type(text) ~= "string" then return text end
+        local localized = by_english[text]
+        return type(localized) == "string" and localized or text
+      end
+      if type(Font.split) == "function" then
+        local original_split = Font.split
+        Font.split = function(text)
+          return original_split(localize(text))
+        end
+      end
+      if type(Font.draw) == "function" then
+        local original_draw = Font.draw
+        Font.draw = function(text, x, y, ...)
+          return original_draw(localize(text), x, y, ...)
+        end
+      end
+    end
+  end
+
+  -- ---- Supporto specifico per Pokémon Giallo -----------------------
+  local okGame, GameVersion = pcall(require, "src.core.GameVersion")
+  local yellow_game_version = okGame and type(GameVersion) == "table"
+      and type(GameVersion.isYellow) == "function"
+      and GameVersion.isYellow()
+  if yellow_game_version then
+    each("dialogue_yellow", function(id, value) mod.content.text:override(id, value) end)
+    each("pokedex_yellow", function(id, value) mod.content.text:override(id, value) end)
+  end
 
   -- ---- Griglia inserimento Nome ------------------------------------
   local grid = catalog("naming")
@@ -307,11 +402,11 @@ return function(mod)
 
     self:frameBox(0, 8, 20, 3)
     love.graphics.setColor(0, 0, 0, 1)
-    Font.draw(Strings("MEDAGLIE"), 40, 73)
+    Font.draw(Strings("MEDAGLIE"), 48, 73)
     if self.circle then
       love.graphics.setColor(1, 1, 1, 1)
-      love.graphics.draw(self.circle, 32, 72)
-      love.graphics.draw(self.circle, 112, 72)
+      love.graphics.draw(self.circle, 36, 72)
+      love.graphics.draw(self.circle, 116, 72)
       love.graphics.setColor(0, 0, 0, 1)
     end
 
@@ -332,6 +427,77 @@ return function(mod)
       end
     end
     love.graphics.setColor(1, 1, 1, 1)
+  end
+
+
+  -- ---- UI: Sottomenu Pokémon (Scambio -> "SPOSTA") ----------------
+  --mod.hooks:wrap("ui.party.submenu", function(next, game, items, mon, ctx)
+  --  local result = next(game, items, mon, ctx)
+  --  if type(result) == "table" then
+  --      for _, item in ipairs(result) do
+  --          if item.action == "switch" then
+  --              item.label = "SPOSTA"
+  --          end
+  --      end
+  --  end
+  --  return result
+  --end)
+
+  -- ---- UI: Fix Schermata del Titolo (Nastro e Pokémon Giallo) -----
+  local TitleState = require("src.ui.TitleState")
+  local oldTitleDraw = TitleState.draw
+  TitleState.draw = function(self)
+    oldTitleDraw(self)
+    -- Copre il nastro originale e ridisegna con nuove proporzioni
+    if self.version and not self.yellowLayout and self.phase ~= "drop" and self.phase ~= "settle" then
+      local iw, ih = self.version:getDimensions()
+      local rx = self.ribbonOffset or 0
+      love.graphics.setColor(1, 1, 1, 1)
+      love.graphics.rectangle("fill", 40 + rx, 64, 104, 8)
+      if self.blue then
+        love.graphics.draw(self.version, love.graphics.newQuad(88, 0, 72, 8, iw, ih), 48 + rx, 64)
+      else
+        love.graphics.draw(self.version, love.graphics.newQuad(0, 0, 88, 8, iw, ih), 40 + rx, 64)
+      end
+    end
+    love.graphics.setColor(1, 1, 1, 1)
+  end
+
+  local oldNew = TitleState.new
+  TitleState.new = function(game, opts)
+    local self = oldNew(game, opts)
+    if self.yellow then
+      local ok, logo = pcall(love.graphics.newImage, mod.assets:path("assets/title/yellow_logo.png"))
+      if ok and logo then
+        logo:setFilter("nearest", "nearest")
+        self.logo = logo
+      end
+      local ok2, bubble = pcall(love.graphics.newImage, mod.assets:path("assets/title/pika_bubble.png"))
+      if ok2 and bubble then
+        bubble:setFilter("nearest", "nearest")
+        self.yellowBubble = bubble
+      end
+    end
+    return self
+  end
+
+  -- ---- UI: Fix Gettoni/Soldi al Casinò -----------------------------
+  local originalFontDraw = Font.draw
+  local originalFontDrawBox = Font.drawBox
+  Font.draw = function(text, x, y, ...)
+      if text == Strings("MONEY") and x == 96 and y == 16 then
+          x = 88
+      elseif text == Strings("COIN") and x == 96 and y == 32 then
+          x = 88
+      end
+      return originalFontDraw(text, x, y, ...)
+  end
+  Font.drawBox = function(x, y, w, h, ...)
+      if x == 11 and y == 0 and w == 9 and h == 7 then
+          w = 10
+          x = 10
+      end
+      return originalFontDrawBox(x, y, w, h, ...)
   end
 
   -- ---- Caricamento Mod Esterne ------------------------------------
