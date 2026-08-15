@@ -418,7 +418,7 @@ return {
   ["Nothing to CUT!"] = "Non c'é niente da\nTAGLIARE!",
   ["{RAM:wNameBuffer} used\nSTRENGTH."] = "{RAM:wNameBuffer} usa\nFORZA.",
   ["{RAM:wNameBuffer} can\nmove boulders."] = "{RAM:wNameBuffer} puo'\nspostare i massi.",
-  ["SWITCH"] = "SPOSTA",
+  ["SWITCH"] = "ORDINA",
   ["FLY"] = "VOLO",
   ["FLASH"] = "FLASH",
   ["CUT"] = "TAGLIO",

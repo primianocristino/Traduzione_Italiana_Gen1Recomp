@@ -97,4 +97,89 @@ return function(mod)
     end,
   },
   })
+
+
+
+
+
+mod.content.map_scripts:register("ROUTE_24", {
+  talk = {
+    ["TEXT_ROUTE24_COOLTRAINER_M1"] = function(game, ow, npc, done)
+      -- 1. Se il reclutatore del Team Rocket e' gia' stato sconfitto
+      if game.save.flags["EVENT_BEAT_ROUTE24_ROCKET"] then
+        game.stack:push(TextBox.new(game, "Con le tue capacita'\npotresti diventare\011un capo del\011TEAM ROCKET!", done))
+        return
+      end
+
+      -- Avvio della battaglia e impostazione del flag di vittoria
+      local function start_battle()
+        mod.log:info("--- DEBUG: Avvio battaglia con ow:engageTrainer ---")
+        if ow and type(ow.engageTrainer) == "function" then
+          game.save.flags["EVENT_BEAT_ROUTE24_ROCKET"] = true
+          ow:engageTrainer(npc, done)
+        else
+          mod.log:warn("--- DEBUG: ow:engageTrainer non trovato, chiusura dialogo ---")
+          done()
+        end
+      end
+
+      -- Domanda di reclutamento
+      local function ask_join()
+        game.stack:push(TextBox.new(game, "A proposito, ti\nandrebbe di unirti\011al TEAM ROCKET?", function()
+          game.stack:push(ChoiceBox.new(game, function(yes)
+            game.stack:push(TextBox.new(game, "Argh! Non sei\nconvinto?\012Allora ti mostrero'\nil mio potere!", function()
+              start_battle()
+            end))
+          end))
+        end))
+      end
+
+      -- Funzione per verificare se l'inventario è pieno
+      local function check_inventory_full()
+        -- Metodo standard basato sulla struttura inventory del motore
+        if game.save.inventory.isFull and type(game.save.inventory.isFull) == "function" then
+          return game.save.inventory:isFull("NUGGET")
+        elseif game.save.inventory.hasSpace and type(game.save.inventory.hasSpace) == "function" then
+          return not game.save.inventory:hasSpace("NUGGET")
+        end
+
+        -- Fallback di controllo basato su limiti standard di Gen 1 (es. 20 slot massimi nell'inventario)
+        local count = 0
+        for _ in pairs(game.save.inventory) do
+          count = count + 1
+        end
+        -- Se ci sono già 20 o più voci distinte e non possediamo già una Pepita accumulabile nello stesso slot
+        if count >= 20 and not (game.save.inventory["NUGGET"] and game.save.inventory["NUGGET"] > 0) then
+          return true
+        end
+
+        return false
+      end
+
+      -- 2. Consegna della Pepita se non ancora ricevuta
+      if not game.save.flags["EVENT_GOT_NUGGET"] then
+        game.stack:push(TextBox.new(game, "Complimenti!\nHai battuto i nostri 5\011allenatori della sfida!\012Hai appena vinto un\npremio favoloso!", function()
+          
+          -- Controllo dello spazio nell'inventario prima di consegnare
+          if check_inventory_full() then
+            mod.log:info("--- DEBUG: Inventario pieno, impossibile consegnare la Pepita ---")
+            game.stack:push(TextBox.new(game, "Non hai abbastanza\nspazio!", done))
+            return
+          end
+
+          game.save.inventory["NUGGET"] = (game.save.inventory["NUGGET"] or 0) + 1
+          game.save.flags["EVENT_GOT_NUGGET"] = true
+          mod.log:info("--- DEBUG: Pepita aggiunta all'inventario. Totale: " .. tostring(game.save.inventory["NUGGET"]) .. " ---")
+
+          game.stack:push(TextBox.new(game, "{PLAYER} riceve\nuna PEPITA!", function()
+            ask_join()
+          end))
+        end))
+      else
+        ask_join()
+      end
+    end,
+  },
+})
+
 end

@@ -1629,12 +1629,12 @@ return {
   ["_Route24CooltrainerF1EndBattleText"] = "Ho\nperso anche io!",
   ["_Route24CooltrainerF2AfterBattleText"] = "Ce l'ho messa\ntutta, non ho\vrimpianti!",
   ["_Route24CooltrainerF2BattleText"] = "Sono la seconda!\nOra si fa sul\vserio!",
- ["_Route24CooltrainerF2EndBattleText"] = "Come\nho potuto perdere?",
+  ["_Route24CooltrainerF2EndBattleText"] = "Come\nho potuto perdere?",
   ["_Route24CooltrainerM1DefeatedText"] = "Arrgh! Ci sai\nfare!",
   ["_Route24CooltrainerM1JoinTeamRocketText"] = "A proposito, ti\nandrebbe di\ventrare nel TEAM\vROCKET? Siamo un\vgruppo dedicato al\vmale grazie ai\vPOKéMON! Vuoi\vunirti? Sei\vsicuro? Forza,\vunisciti a noi! Ti\vsto dicendo di\vunirti! OK, hai\vbisogno di\vconvinzione! Ti\vfaro' un'offerta\vche non potrai\vrifiutare!",
   ["_Route24CooltrainerM1NoRoomText"] = "Non hai abbastanza\nspazio!",
   ["_Route24CooltrainerM1ReceivedNuggetText"] = "{PLAYER} riceve\n{RAM:wStringBuffer}!",
-  ["_Route24CooltrainerM1YouBeatOurContestText"] = "Complimenti! Hai\nbattuto i nostri\vallenatori!",
+  ["_Route24CooltrainerM1YouBeatOurContestText"] = " ",
   ["_Route24CooltrainerM1YouCouldBecomeATopLeaderText"] = "Con le tue\ncapacita' potresti\vdiventare un capo\vnel TEAM ROCKET!",
   ["_Route24CooltrainerM1YouJustEarnedAPrizeText"] = "Hai appena vinto\nun premio\vfavoloso!",
   ["_Route24CooltrainerM2AfterBattleText"] = "Mi sono nascosto\nperché la gente\vsul ponte mi\vspaventava!",
@@ -1648,7 +1648,7 @@ return {
   ["_Route24Youngster1EndBattleText"] = "Ahi!\nSchiacciato al\vsuolo!",
   ["_Route24Youngster2AfterBattleText"] = "Ce l'ho messa\ntutta, non ho\vrimpianti!",
   ["_Route24Youngster2BattleText"] = "Questo é il PONTE\nNUGGET! Batti 5 di\vnoi e vinci un\vpremio favoloso!\vPensi di farcela?",
-  ["_Route24Youngster2EndBattleText"] = "Urca! Roba\nforte!",
+  ["_Route24Youngster2EndBattleText"] = "\nUrca! Roba forte!",
   ["_Route25BillSignText"] = "VILLA MARINA Qui\nabita BILL",
   ["_Route25CooltrainerF1AfterBattleText"] = "Vorrei che il mio\nragazzo fosse\vbravo come te!",
   ["_Route25CooltrainerF1BattleText"] = "Ciao! Il mio\nragazzo é un figo!",
@@ -1707,7 +1707,7 @@ return {
   ["_Route3Youngster4EndBattleText"] = "Perso!\nPerso! Perso!",
   ["_Route3Youngster5AfterBattleText"] = "I POKéMON allenati\nsono piu' forti di\vquelli selvatici!",
   ["_Route3Youngster5BattleText"] = "Puoi lottare\ncontro il mio\vnuovo POKéMON!",
-  ["_Route3Youngster5EndBattleText"] = "Fatto e\nfinito!",
+  ["_Route3Youngster5EndBattleText"] = "\nFatto e finito!",
   ["_Route4CooltrainerF1Text"] = "Ahi! Sono\ninciampata su un\vPOKéMON roccioso,\vGEODUDE!",
   ["_Route4CooltrainerF2AfterBattleText"] = "Forse non ci sono\naltri funghi qui.\vCredo di averli\vpresi tutti.",
   ["_Route4CooltrainerF2BattleText"] = "Sono venuta a\nprendere il mio\vPOKéMON fungo!",
@@ -2101,7 +2101,7 @@ return {
   ["_SilphCo6FSilphWorkerMHelpMePleaseText"] = "Mio Dio, aiuto!\nAiutami ti prego!",
   ["_SilphCo6FSilphWorkerMWeGotEngagedText"] = "Ci siamo\nfidanzati! Eheheh!",
   ["_SilphCo7FRivalDefeatedText"] = "Oh ho! Sei pronto\nper il CAPO\vROCKET!",
-  ["_SilphCo7FRivalGoodLuckToYouText"] = "Beh, {PLAYER}! Vado\navanti e sopra!\vGuardando il mio\vPOKéDEX capisco\vchi é forte e come\vsi evolvono! Vado\valla LEGA POKéMON\va sconfiggere\vi SUPERQUATTRO!\vDiventero' il piu'\vforte allenatore!\v{PLAYER}, buona\vfortuna! Ci si\vvede!",
+  ["_SilphCo7FRivalGoodLuckToYouText"] = "Beh, {PLAYER}! Vado\navanti e sopra!\vGuardando il mio\vPOKéDEX capisco\vchi é forte e come\vsi evolvono! Vado\valla LEGA POKéMON\va sconfiggere i\vSUPERQUATTRO!\vDiventero' il piu'\vforte allenatore!\v{PLAYER}, buona\vfortuna! Ci si\vvede!",
   ["_SilphCo7FRivalText"] = "{RIVAL}: Cosa ti\nha trattenuto?",
   ["_SilphCo7FRivalVictoryText"] = "{RIVAL}: Come\ndire? Non sei\vancora pronto per\vgiocare con i\vgrandi!",
   ["_SilphCo7FRivalWaitedHereText"] = "{RIVAL}: Ahahah!\nSapevo che saresti\vvenuto! Il TEAM\vROCKET ti ha\vrallentato! Ti ho\vvisto a\vZAFFERANOPOLI e ho\vvoluto vedere se\vsei migliorato!",
@@ -2597,5 +2597,8 @@ return {
   ["_ViridianCityFisherYouCanHaveThisText"] = "Uffa! De me ne\nsono addormentato\val sole. Ho\vsognato che un\vDROWZEE si\vmangiava i miei\vsogni... Cos'é\vquesto? Da dove\vspunta questa MT?\vChe paura! Tieni,\vprendi questa MT",
   ["_ViridianSchoolHouseLittleGirlText"] = "Mia sorella ha\ndetto che i\vPOKéMON diventano\vpiu' docili se li\vtratti con affetto",
 
-  
+
+  ["You look tired!\nYou should take a\nquick nap!"] = "Sembri stanco!\nDovresti fare un\nriposino!",
+  ["Don't give up!"] = "Non arrenderti!",
+
 }

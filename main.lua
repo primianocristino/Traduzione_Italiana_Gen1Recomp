@@ -11,7 +11,6 @@ local Badges = require("src.inventory.Badges")
 
 return function(mod)
 
-
   -- ---- GESTIONE OPZIONI (Menu Impostazioni Mod) --------------------
   local compile = loadstring or load
   local source, err = mod:read("it_options.lua")
@@ -25,21 +24,18 @@ return function(mod)
     end
   end
   
-  -- Esporta le opzioni persistenti per l'uso nel resto della mod
   if mod.options then
     mod.exports.lingua_mosse = mod.options:get("lingua_mosse")
     mod.exports.mostra_nemico = mod.options:get("mostra_nemico")
     mod.exports.prezzi_riga = mod.options:get("prezzi_riga")
     mod.exports.trainer_card = mod.options:get("trainer_card")
   else
-    -- Fallback sicuro se it_options.lua non esiste ancora
     mod.exports.lingua_mosse = "italiano"
     mod.exports.mostra_nemico = true
     mod.exports.prezzi_riga = true
     mod.exports.trainer_card = true
   end
 
-  -- Funzione per leggere i file di catalogo dalla cartella lang/
   local function catalog(name)
     local rel = "lang/" .. name .. ".lua"
     local body = mod:read(rel)
@@ -57,7 +53,6 @@ return function(mod)
     return table_
   end
 
-  -- Funzione per caricare script esterni
   local function loadScript(path)
     local body = mod:read(path)
     if not body then 
@@ -77,7 +72,6 @@ return function(mod)
     end
   end
 
-  -- Applica le traduzioni ignorando le chiavi vuote
   local function each(name, apply)
     local n = 0
     for key, value in pairs(catalog(name)) do
@@ -89,9 +83,8 @@ return function(mod)
     return n
   end
 
-  -- ---- Font e Caratteri (Glyphs) -----------------------------------
+  -- ---- Font e Caratteri -------------------------------------------
   for id, page in pairs(catalog("font")) do
-    -- Risolve il percorso dell'immagine rispetto alla cartella della mod
     if type(page) == "table" and type(page.image) == "string" and mod:read(page.image) then
       page.image = mod.assets:path(page.image)
     end
@@ -104,48 +97,22 @@ return function(mod)
 
   -- ---- Testi e Tabelle ---------------------------------------------
   local counts = {}
-  -- Supporto per Pokédex integrato 
-  counts.pokedex = each("pokedex_redblue", function(id, value)
-    mod.content.text:override(id, value)
-  end)
-  counts.dialogue = each("dialogue", function(id, value)
-    mod.content.text:override(id, value)
-  end)
-  counts.strings = each("strings", function(source, value)
-    mod.content.strings:override(source, value)
-  end)
-  counts.species = each("species_names", function(id, value)
-    mod.content.pokemon:patch(id, { name = value })
-  end)
-  
-  counts.items = each("item_names", function(id, value)
-    mod.content.items:patch(id, { name = value })
-  end)
-  counts.trainers = each("trainer_names", function(id, value)
-    mod.content.trainers:patch(id, { name = value })
-  end)
-  ---- Traduzione Categorie Pokédex (dexEntry.kind) -------------------------
-  counts.dex_kinds = each("dex_kinds", function(id, value)
-    mod.content.pokemon:patch(id, { dexEntry = { kind = value } })
-  end)
+  counts.pokedex = each("pokedex_redblue", function(id, value) mod.content.text:override(id, value) end)
+  counts.dialogue = each("dialogue", function(id, value) mod.content.text:override(id, value) end)
+  counts.strings = each("strings", function(source, value) mod.content.strings:override(source, value) end)
+  counts.species = each("species_names", function(id, value) mod.content.pokemon:patch(id, { name = value }) end)
+  counts.items = each("item_names", function(id, value) mod.content.items:patch(id, { name = value }) end)
+  counts.trainers = each("trainer_names", function(id, value) mod.content.trainers:patch(id, { name = value }) end)
+  counts.dex_kinds = each("dex_kinds", function(id, value) mod.content.pokemon:patch(id, { dexEntry = { kind = value } }) end)
 
-  
-  -- Gestione Condizionale: Lingua delle Mosse
   if mod.exports.lingua_mosse == "gen1" then
-    counts.moves = each("move_names", function(id, value)
-      mod.content.moves:patch(id, { name = value })
-    end)
+    counts.moves = each("move_names", function(id, value) mod.content.moves:patch(id, { name = value }) end)
   elseif mod.exports.lingua_mosse == "italiano" then
-    counts.moves = each("move_names2", function(id, value)
-      mod.content.moves:patch(id, { name = value })
-    end)
+    counts.moves = each("move_names2", function(id, value) mod.content.moves:patch(id, { name = value }) end)
   elseif mod.exports.lingua_mosse == "inglese" then
-    counts.moves = each("move_names3", function(id, value)
-      mod.content.moves:patch(id, { name = value })
-    end)
+    counts.moves = each("move_names3", function(id, value) mod.content.moves:patch(id, { name = value }) end)
   end
 
-  -- Gestione Condizionale: Mostrare o nascondere "nemico" nei testi di battaglia
   if mod.exports.mostra_nemico then
     mod.content.strings:override("Enemy %s", "%s nemico")
     mod.content.strings:override("%s\nused %s!", "%s\nusa %s!")
@@ -154,11 +121,10 @@ return function(mod)
     mod.content.strings:override("%s\nused %s!", "%s usa\n%s!")
   end
 
-  -- ---- Traduzione Dinamica Tipi (TypeChart) e Stati -------------------------
+  -- ---- Traduzione Tipi e Stati ------------------------------------
   local okType, TypeChart = pcall(require, "src.battle.TypeChart")
   local by_english = {}
   
-  -- Estrazione dati da type_names
   counts.type_names = each("type_names", function(typeId, localized)
     if okType and TypeChart and type(TypeChart.displayName) == "function" then
       local canonical = TypeChart.displayName(typeId)
@@ -168,7 +134,6 @@ return function(mod)
     end
   end)
 
-  -- Unione dei risultati dal file status_labels
   counts.status_labels = each("status_labels", function(statusId, localized)
     if okType and TypeChart and type(TypeChart.displayName) == "function" then
       local canonical = TypeChart.displayName(statusId)
@@ -188,20 +153,16 @@ return function(mod)
       end
       if type(Font.split) == "function" then
         local original_split = Font.split
-        Font.split = function(text)
-          return original_split(localize(text))
-        end
+        Font.split = function(text) return original_split(localize(text)) end
       end
       if type(Font.draw) == "function" then
         local original_draw = Font.draw
-        Font.draw = function(text, x, y, ...)
-          return original_draw(localize(text), x, y, ...)
-        end
+        Font.draw = function(text, x, y, ...) return original_draw(localize(text), x, y, ...) end
       end
     end
   end
 
-  -- ---- Supporto specifico per Pokémon Giallo -----------------------
+  -- ---- Pokémon Giallo ---------------------------------------------
   local okGame, GameVersion = pcall(require, "src.core.GameVersion")
   local yellow_game_version = okGame and type(GameVersion) == "table"
       and type(GameVersion.isYellow) == "function"
@@ -211,7 +172,7 @@ return function(mod)
     each("pokedex_yellow", function(id, value) mod.content.text:override(id, value) end)
   end
 
-  -- ---- Griglia inserimento Nome ------------------------------------
+  -- ---- Griglia Nomi ------------------------------------------------
   local grid = catalog("naming")
   if grid.upper or grid.lower then
     mod.hooks:wrap("ui.naming.grid", function(base, ctx)
@@ -220,7 +181,7 @@ return function(mod)
     end)
   end
 
-  -- ---- Literal Handlers (Dinamici) ---------------------------------
+  -- ---- Literal Handlers --------------------------------------------
   local literal_body = mod:read("lang/literal_handlers.lua")
   if literal_body then
     local chunk, err = loadstring(literal_body, "lang/literal_handlers.lua")
@@ -230,7 +191,7 @@ return function(mod)
     setup(mod)
   end
 
-  -- ---- UI: Menu di Lotta -------------------------------------------
+  -- ---- UI: Menu Lotta ----------------------------------------------
   BattleState.drawTextArea = function(self)
     love.graphics.setColor(0, 0, 0, 1)
     if self.phase == "messages" and (self.current or self.animPlaying) then
@@ -310,7 +271,7 @@ return function(mod)
     end
   end
 
-  -- ---- UI: Allineamento Liste e Inventario -------------------------
+  -- ---- UI: Liste e Inventario ------------------------------------
   function ListMenu:draw() 
     love.graphics.setColor(1, 1, 1, 1)
     love.graphics.rectangle("fill", 0, 0, 160, 144)
@@ -335,7 +296,6 @@ return function(mod)
         love.graphics.setColor(0, 0, 0, 1)
       end
       
-      -- Gestione Condizionale: Quantità e Prezzi
       if item.right then
         local offset = mod.exports.prezzi_riga and 8 or 0
         Font.draw(item.right, 160 - 8 - Font.width(item.right), y + offset)
@@ -403,7 +363,6 @@ return function(mod)
   -- ---- UI: Scheda Allenatore --------------------------------------
   local oldTrainerCardDraw = TrainerCard.draw
   function TrainerCard:draw()
-    -- Gestione Condizionale: Trainer Card
     if not mod.exports.trainer_card then
         return oldTrainerCardDraw(self)
     end
@@ -457,26 +416,24 @@ return function(mod)
     love.graphics.setColor(1, 1, 1, 1)
   end
 
-
-  -- ---- UI: Sottomenu Pokémon (Scambio -> "SPOSTA") ----------------
+  -- ---- UI: Sottomenu Pokémon --------------------------------------
   mod.hooks:wrap("ui.party.submenu", function(next, game, items, mon, ctx)
     local result = next(game, items, mon, ctx)
     if type(result) == "table" then
         for _, item in ipairs(result) do
             if item.action == "switch" then
-                item.label = "SPOSTA"
+                item.label = "ORDINA"
             end
         end
     end
     return result
   end)
 
-  -- ---- UI: Fix Schermata del Titolo (Nastro e Pokémon Giallo) -----
+  -- ---- UI: Fix Schermata del Titolo --------------------------------
   local TitleState = require("src.ui.TitleState")
   local oldTitleDraw = TitleState.draw
   TitleState.draw = function(self)
     oldTitleDraw(self)
-    -- Copre il nastro originale e ridisegna con nuove proporzioni
     if self.version and not self.yellowLayout and self.phase ~= "drop" and self.phase ~= "settle" then
       local iw, ih = self.version:getDimensions()
       local rx = self.ribbonOffset or 0
@@ -509,9 +466,10 @@ return function(mod)
     return self
   end
 
-  -- ---- UI: Fix Gettoni/Soldi al Casinò -----------------------------
+  -- ---- UI: Fix Casinò ----------------------------------------------
   local originalFontDraw = Font.draw
   local originalFontDrawBox = Font.drawBox
+
   Font.draw = function(text, x, y, ...)
       if text == Strings("MONEY") and x == 96 and y == 16 then
           x = 88
@@ -520,6 +478,7 @@ return function(mod)
       end
       return originalFontDraw(text, x, y, ...)
   end
+
   Font.drawBox = function(x, y, w, h, ...)
       if x == 11 and y == 0 and w == 9 and h == 7 then
           w = 10
@@ -528,7 +487,8 @@ return function(mod)
       return originalFontDrawBox(x, y, w, h, ...)
   end
 
-  -- ---- Caricamento Mod Esterne ------------------------------------
+  -- ---- Caricamento Mod Esterne & Tracker ---------------------------
+  loadScript("mods/text_tracker.lua")
   loadScript("mods/nuzlocke.lua")
   loadScript("mods/example_mew_starter.lua")
   loadScript("mods/dramatic_shape.lua")
@@ -541,12 +501,5 @@ return function(mod)
     for _, n in pairs(counts) do total = total + n end
     mod.log:info("Italiano: %d stringhe tradotte", total)
   end)
-
-
-
-
-
-
-
 
 end
