@@ -2101,7 +2101,7 @@ return {
   ["_SilphCo6FSilphWorkerMHelpMePleaseText"] = "Mio Dio, aiuto!\nAiutami ti prego!",
   ["_SilphCo6FSilphWorkerMWeGotEngagedText"] = "Ci siamo\nfidanzati! Eheheh!",
   ["_SilphCo7FRivalDefeatedText"] = "Oh ho! Sei pronto\nper il CAPO\vROCKET!",
-  ["_SilphCo7FRivalGoodLuckToYouText"] = "Beh, {PLAYER}! Vado\navanti e sopra!\vGuardando il mio\vPOKéDEX capisco\vchi é forte e come\vsi evolvono! Vado\valla LEGA POKéMON\va cacciare i\vSUPERQUATTRO!\vDiventero' il piu'\vforte allenatore!\v{PLAYER}, buona\vfortuna! Ci si\vvede!",
+  ["_SilphCo7FRivalGoodLuckToYouText"] = "Beh, {PLAYER}! Vado\navanti e sopra!\vGuardando il mio\vPOKéDEX capisco\vchi é forte e come\vsi evolvono! Vado\valla LEGA POKéMON\va sconfiggere\vi SUPERQUATTRO!\vDiventero' il piu'\vforte allenatore!\v{PLAYER}, buona\vfortuna! Ci si\vvede!",
   ["_SilphCo7FRivalText"] = "{RIVAL}: Cosa ti\nha trattenuto?",
   ["_SilphCo7FRivalVictoryText"] = "{RIVAL}: Come\ndire? Non sei\vancora pronto per\vgiocare con i\vgrandi!",
   ["_SilphCo7FRivalWaitedHereText"] = "{RIVAL}: Ahahah!\nSapevo che saresti\vvenuto! Il TEAM\vROCKET ti ha\vrallentato! Ti ho\vvisto a\vZAFFERANOPOLI e ho\vvoluto vedere se\vsei migliorato!",
