@@ -1,7 +1,7 @@
 {
   "id": "pokegen1_italiano",
-  "name": "versione italiana",
-  "version": "0.1.0",
+  "name": "gen1 italiano",
+  "version": "1.0.0",
   "author": "PrimianoCristino",
   "api": 2,
   "entry": "main.lua",
@@ -12,5 +12,6 @@
   "dependencies": [],
   "optional_dependencies": [],
   "conflicts": [],
-  "description": "Traduzione italiana a cura di Primiano Cristino"
+  "description": "Traduzione italiana a cura di Primiano Cristino",
+  "github": "primianocristino/Traduzione_Italiana_Gen1Recomp"
 }

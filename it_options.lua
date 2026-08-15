@@ -12,10 +12,11 @@ function M.install(mod)
     {
       key = "lingua_mosse",
       type = "choice",
-      default = "italiano",
+      default = "gen1",
       choices = {
+        { "GEN1", "gen1" },
         { "ITALIANO", "italiano" },
-        { "INGLESE (12)", "inglese" },
+        { "INGLESE", "inglese" },
       },
     },
 
@@ -98,6 +99,7 @@ function M.install(mod)
 
   mod.content.screens:register(SCREEN_ID, {
     new = function(game)
+
       if mod.exports.prezzi_riga == nil then
         mod.exports.prezzi_riga = true
       end
@@ -105,7 +107,7 @@ function M.install(mod)
       if mod.exports.trainer_card == nil then
         mod.exports.trainer_card = true
       end
-      
+
       local Font = mod.ui.Font
 
       -- Carica i valori salvati
@@ -176,14 +178,19 @@ function M.install(mod)
 
           -- ==========================================
           -- LINGUA MOSSE
+          -- GEN1 -> ITALIANO -> INGLESE -> GEN1
           -- ==========================================
 
           if self.index == 1 then
 
-            if row.value == "inglese" then
+            if row.value == "gen1" then
               row.value = "italiano"
-            else
+
+            elseif row.value == "italiano" then
               row.value = "inglese"
+
+            else
+              row.value = "gen1"
             end
 
             setOption(
@@ -266,11 +273,14 @@ function M.install(mod)
 
           if row.key == "lingua_mosse" then
 
-            if value == "inglese" then
-              value = "INGLESE (12)"
+            if value == "gen1" then
+              value = "GEN1"
 
             elseif value == "italiano" then
               value = "ITALIANO"
+
+            elseif value == "inglese" then
+              value = "INGLESE"
             end
 
           elseif row.key == "mostra_nemico" then
@@ -290,7 +300,7 @@ function M.install(mod)
         end
 
         Font.draw("B: INDIETRO", 8, 112)
-        Font.draw("NOTA: RIAVVIA PER", 8, 120)
+        Font.draw("NOTA:RIAVVIA PER", 8, 120)
         Font.draw("     OPZIONI 1 E 2", 8, 128)
       end
 
