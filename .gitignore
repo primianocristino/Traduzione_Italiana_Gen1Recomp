@@ -222,4 +222,4 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
-missing_dialogues.txt
+log/

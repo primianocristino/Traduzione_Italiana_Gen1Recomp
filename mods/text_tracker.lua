@@ -2,7 +2,7 @@
 return function(mod)
   local logged = {}
   local mod_dir = mod.path or "."
-  local log_file_path = mod_dir .. "/missing_dialogues.txt"
+  local log_file_path = mod_dir .. "/log/missing_dialogues.txt"
 
   local function log_entry(origin, key_or_text, raw_text)
     if not key_or_text or logged[key_or_text] then return end
