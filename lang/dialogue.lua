@@ -2598,6 +2598,12 @@ return {
   ["_ViridianSchoolHouseLittleGirlText"] = "Mia sorella ha\ndetto che i\vPOKéMON diventano\vpiu' docili se li\vtratti con affetto",
 
 
+  ["_SilphCo9FNurseYouLookTiredText"] ="Sembri stanco!\nDovresti fare un\nriposino!",
+  ["_SilphCo9FNurseDontGiveUpText"] ="Non arrenderti!",
+  ["_SilphCo9FNurseThankYouText"] ="Grazie mille!", 
+
+
+
   ["You look tired!\nYou should take a\nquick nap!"] = "Sembri stanco!\nDovresti fare un\nriposino!",
   ["Don't give up!"] = "Non arrenderti!",
 
