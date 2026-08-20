@@ -103,10 +103,6 @@ return {
   ["%s's\nhit with recoil!"] = "%s\nsubisce il contraccolpo!",
   ["%s is\nprotected by MIST!"] = "%s é\nprotetto dalla NUBE!",
   ["Nothing happened!"] = "Non é successo\nnulla!",
-  ["%s's\n%s rose!"] = "%s:\n%s cresce!",
-  ["%s's\n%s\ngreatly rose!"] = "%s:\n%s cresce molto!",
-  ["%s's\n%s fell!"] = "%s:\n%s cala!",
-  ["%s's\n%s\ngreatly fell!"] = "%s:\n%s cala molto!",
   ["Fire defrosted\n%s!"] = "Il fuoco scongela\n%s!",
   ["%s\nbecame confused!"] = "%s\né diventato confuso!",
   ["%s\nwas seeded!"] = "%s\né stato parassitato!",
@@ -745,4 +741,28 @@ return {
   ["Reset"] = "Reset",
   ["TOUCH CONTROLS"] = "COMANDI TOUCH",
 
+
+  ["%s's\n%s rose!"] = "Cresce %s di\n%s!",
+  ["%s's\n%s\ngreatly rose!"] = "Cresce %s di\n%s\ndi molto!",
+  ["%s's\n%s fell!"] = "Cala %s di\n%s!",
+  ["%s's\n%s\ngreatly fell!"] = "Cala %s di\n%s\ndi molto!",
+
+
+  ["PEWTER CITY"] = "PLUMBEOPOLI",
+  ["CERULEAN CITY"] = "CELESTOPOLI",
+  ["VERMILION CITY"] = "ARANCIOPOLI",
+  ["CELADON CITY"] = "AZZURROPOLI",
+  ["FUCHSIA CITY"] = "FUCSIAPOLI",
+  ["SAFFRON CITY"] = "ZAFFERANOPOLI",
+  ["CINNABAR ISLAND"] = "ISOLA CANNELLA",
+  ["VIRIDIAN CITY"] = "SMERALDOPOLI",
+
+  ["PEWTER"] = "PLUMBEOPOLI",
+  ["CERULEAN"] = "CELESTOPOLI",
+  ["VERMILION"] = "ARANCIOPOLI",
+  ["CELADON"] = "AZZURROPOLI",
+  ["FUCHSIA"] = "FUCSIAPOLI",
+  ["SAFFRON"] = "ZAFFERANOPOLI",
+  ["CINNABAR"] = "CANNELLA",
+  ["VIRIDIAN"] = "SMERALDOPOLI", 
 }
