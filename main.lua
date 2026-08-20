@@ -162,44 +162,24 @@ return function(mod)
     end
   end
 
+  -- ---- FIX INVERSIONE STATISTICHE (Senza Crash) ----
+  local Strings = require("src.core.Strings")
 
+  if type(Strings) == "table" then
+    local mt = getmetatable(Strings) or {}
+    local orig_call = mt.__call
 
-
-
-
-
-
-
-
-
--- ---- FIX INVERSIONE STATISTICHE (Senza Crash) ----
-local Strings = require("src.core.Strings")
-
-if type(Strings) == "table" then
-  local mt = getmetatable(Strings) or {}
-  local orig_call = mt.__call
-
-  if orig_call then
-    mt.__call = function(self, key, arg1, arg2, ...)
-      -- Se la chiave riguarda le statistiche e abbiamo entrambi gli argomenti
-      if type(key) == "string" and (key:find("rose") or key:find("fell")) and arg1 ~= nil and arg2 ~= nil then
-        -- Inverte arg1 (Pokémon) con arg2 (Statistica)
-        return orig_call(self, key, arg2, arg1, ...)
+    if orig_call then
+      mt.__call = function(self, key, arg1, arg2, ...)
+        -- Se la chiave riguarda le statistiche e abbiamo entrambi gli argomenti
+        if type(key) == "string" and (key:find("rose") or key:find("fell")) and arg1 ~= nil and arg2 ~= nil then
+          -- Inverte arg1 (Pokémon) con arg2 (Statistica)
+          return orig_call(self, key, arg2, arg1, ...)
+        end
+        return orig_call(self, key, arg1, arg2, ...)
       end
-      return orig_call(self, key, arg1, arg2, ...)
     end
   end
-end
-
-
-
-
-
-
-
-
-
-
 
   -- ---- Pokémon Giallo ---------------------------------------------
   local okGame, GameVersion = pcall(require, "src.core.GameVersion")
