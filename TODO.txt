@@ -1,2 +1,4 @@
 mappa
 slot machines
+HEAL
+PALESTRE
