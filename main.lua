@@ -121,7 +121,7 @@ return function(mod)
     mod.content.strings:override("%s\nused %s!", "%s usa\n%s!")
   end
 
-  -- ---- Traduzione Tipi e Stati ------------------------------------
+  -- ---- Traduzione Tipi, Stati e Città (Grafica) --------------------
   local okType, TypeChart = pcall(require, "src.battle.TypeChart")
   local by_english = {}
   
@@ -143,14 +143,28 @@ return function(mod)
     end
   end)
 
+  -- Carica i nomi delle città da city_names.lua per la grafica (es. Volo)
+  counts.city_names = each("city_names", function(english, localized)
+    by_english[english] = localized
+  end)
+
   if next(by_english) then
     local okFont, Font = pcall(require, "src.render.Font")
     if okFont and type(Font) == "table" then
       local function localize(text)
         if type(text) ~= "string" then return text end
-        local localized = by_english[text]
-        return type(localized) == "string" and localized or text
+        -- Se la stringa corrisponde esattamente a una chiave
+        if by_english[text] then return by_english[text] end
+        
+        -- Altrimenti sostituisce solo parole intere (evita che ROCK modifichi BROCK)
+        local result = text
+        for eng, ita in pairs(by_english) do
+          local pattern = "%f[%a]" .. eng:gsub("[%^%$%(%)%%%.%[%]%*%+%-%?]", "%%%1") .. "%f[%A]"
+          result = result:gsub(pattern, ita)
+        end
+        return result
       end
+
       if type(Font.split) == "function" then
         local original_split = Font.split
         Font.split = function(text) return original_split(localize(text)) end
@@ -162,9 +176,7 @@ return function(mod)
     end
   end
 
-
-
--- ---- Intercettazione RAM e Traduzione Città nei Dialoghi ----
+  -- ---- Intercettazione RAM e Traduzione Città nei Dialoghi ----
   local okTB, TextBox = pcall(require, "src.render.TextBox")
   if okTB and type(TextBox) == "table" and type(TextBox.paginate) == "function" then
     local orig_paginate = TextBox.paginate
@@ -189,9 +201,7 @@ return function(mod)
 
     if orig_call then
       mt.__call = function(self, key, arg1, arg2, ...)
-        -- Se la chiave riguarda le statistiche e abbiamo entrambi gli argomenti
         if type(key) == "string" and (key:find("rose") or key:find("fell")) and arg1 ~= nil and arg2 ~= nil then
-          -- Inverte arg1 (Pokémon) con arg2 (Statistica)
           return orig_call(self, key, arg2, arg1, ...)
         end
         return orig_call(self, key, arg1, arg2, ...)
