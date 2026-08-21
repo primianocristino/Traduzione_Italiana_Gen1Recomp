@@ -2596,11 +2596,8 @@ return {
   ["You look tired!\nYou should take a\nquick nap!"] = "Sembri stanco!\nDovresti fare un\nriposino!",
   ["Don't give up!"] = "Non arrenderti!",
 
-
-
   ["_GymStatueText1"] = "PALESTRA POKéMON\nDI {RAM:wGymCityName}\vCAPOPALESTRA:\n{RAM:wGymLeaderName}\vALLENATORI\nVINCENTI: {RIVAL}",
   ["_GymStatueText2"] = "PALESTRA POKéMON\nDI {RAM:wGymCityName}\vCAPOPALESTRA:\n{RAM:wGymLeaderName}\vALLENATORI\nVINCENTI: {RIVAL}\v{PLAYER}",
-
 
   ["_LearnedMove1Text"] = "{RAM:wLearnMoveMonName} ha\nimparato\v{RAM:wStringBuffer}!",
   ["_AbandonLearningText"] = "Abbandonare\nl'apprendimento\vdi {RAM:wStringBuffer}?",

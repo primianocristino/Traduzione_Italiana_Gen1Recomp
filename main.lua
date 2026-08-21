@@ -104,7 +104,7 @@ return function(mod)
   counts.items = each("item_names", function(id, value) mod.content.items:patch(id, { name = value }) end)
   counts.trainers = each("trainer_names", function(id, value) mod.content.trainers:patch(id, { name = value }) end)
   counts.dex_kinds = each("dex_kinds", function(id, value) mod.content.pokemon:patch(id, { dexEntry = { kind = value } }) end)
-
+  counts.gyms = each("gym_text", function(id, value) mod.content.text:override(id, value) end)
   if mod.exports.lingua_mosse == "gen1" then
     counts.moves = each("move_names", function(id, value) mod.content.moves:patch(id, { name = value }) end)
   elseif mod.exports.lingua_mosse == "italiano" then
@@ -159,6 +159,24 @@ return function(mod)
         local original_draw = Font.draw
         Font.draw = function(text, x, y, ...) return original_draw(localize(text), x, y, ...) end
       end
+    end
+  end
+
+
+
+-- ---- Intercettazione RAM e Traduzione Città nei Dialoghi ----
+  local okTB, TextBox = pcall(require, "src.render.TextBox")
+  if okTB and type(TextBox) == "table" and type(TextBox.paginate) == "function" then
+    local orig_paginate = TextBox.paginate
+    local city_replacements = catalog("city_names")
+
+    TextBox.paginate = function(text, ...)
+      if type(text) == "string" then
+        for eng, ita in pairs(city_replacements) do
+          text = text:gsub(eng, ita)
+        end
+      end
+      return orig_paginate(text, ...)
     end
   end
 
