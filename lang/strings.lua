@@ -15,7 +15,7 @@ return {
   ["The enemy's weak!\nGet'm! %s!"] = "Il nemico é debole!\nPrendilo! %s!",
   ["%s is out of\nuseable POKéMON!"] = "%s non ha piu'\nPOKéMON disponibili!",
   ["%s blacked\nout!"] = "%s\nnon ha piu'\vPOKéMON ed é\nfuorigioco!",
-  ["%s sent\nout %s!"] = "%s manda\nin campo %s!",
+  ["%s sent\nout %s!"] = "%s manda\n%s!",
   ["PA: You're out of\nSAFARI BALLs!\nGame over!"] = "ALTOPARLANTE: Finiti i SAFARI\nBALL! Fine\ndel gioco!",
   ["%s is too\nscared to move!"] = "%s ha troppa\npaura per muoversi!",
   ["%s has no\nmoves left!"] = "%s non ha piu'\nmosse disponibili!",
@@ -742,9 +742,9 @@ return {
   ["TOUCH CONTROLS"] = "COMANDI TOUCH",
 
 
-  ["%s's\n%s rose!"] = "Cresce\n%s di %s!",
+  ["%s's\n%s rose!"] = "Cresce %s\ndi %s!",
   ["%s's\n%s\ngreatly rose!"] = "Cresce %s\ndi %s\ndi molto!",
-  ["%s's\n%s fell!"] = "Cala\n%s di %s!",
+  ["%s's\n%s fell!"] = "Cala %s\ndi %s!",
   ["%s's\n%s\ngreatly fell!"] = "Cala %s\ndi %s\ndi molto!",
 
 
